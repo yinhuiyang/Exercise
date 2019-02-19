@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<style type="text/css">
+		button {
+			display: inline-block;
+			height: 30px;
+			line-height: 30px;
+			padding: 0 10px;
+			color: #fff;
+			white-space: nowrap;
+			text-align: center;
+			font-size: 12px;
+			border: none;
+			border-radius: 2px;
+			cursor: pointer;
+			outline: none;
+			border-radius: 4px;
+			background: -moz-linear-gradient(#43cdfd, #27a4fc) !important;
+			background: -ms-linear-gradient(#43cdfd, #27a4fc) !important;
+			background: -webkit-linear-gradient(#27a4fc, #27a4fc) !important;
+			background: linear-gradient(#43cdfd, #27a4fc) !important;
+			filter: progid:DXImageTransform.Microsoft.Gradient(startColorstr="#43cdfd", endColorstr="#27a4fc", gradientType="0") !important;
+		}
+
+		.btn {
+			margin-left: 30px;
+		}
+
+		#img {
+
+			position: absolute;
+			filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+			-webkit-transform: rotate(350deg);
+			-moz-transform: rotate(350deg);
+			-o-transform: rotate(350deg);
+			transform: rotate(350deg);
+			
+		}
+	</style>
+	<body>
+		<div class="piv">
+			<img id="img" src="" alt="">
+		</div>
+		<div class="btn">
+			<button type="button" id="rotate">旋转</button>
+			<button type="button" id="big">放大</button>
+			<button type="button" id="small">缩小</button>
+		</div>
+	</body>
+	<script>
+		window.onload = function() {
+			var current = 0;
+			var p = -1;
+			var img = document.getElementById("img");
+			img.src = "http://pic1.nipic.com/2008-12-30/200812308231244_2.jpg";
+			// img.style.width=img.width * 0.5 +"px";
+			document.getElementById('rotate').onclick = function() {
+				p++
+				if (p == 3) {
+					p = -1
+				}
+				current = (current + 90) % 360;
+				document.getElementById('img').style.filter = "progid:DXImageTransform.Microsoft.BasicImage(rotation=" + p + ");";
+				document.getElementById('img').style.transform = 'rotate(' + current + 'deg)';
+			}  
+			var maxBth = document.getElementById("big");
+			maxBth.onclick = function() { //添加放大点击事件
+				//放大函数
+				maxFun();
+			}
+			var maxWidth = img.width * 1.5; //放大的极限值
+			var maxHeight = img.height * 1.5; //放大的高度的极限值
+			//定义放大函数
+			function maxFun() {
+				var endWidth = img.width * 1.1; //每次点击后的宽度
+				var endHeight = img.height * 1.1; //每次点击后的高度
+				var maxTimer = setInterval(function() {
+					if (img.width < endWidth) {
+						if (img.width < maxWidth) {
+							img.width = img.width * 1.05;
+							img.height = img.height * 1.05;
+							clearInterval(maxTimer);
+						} else {
+							alert("已经放大到最大值了")
+							clearInterval(maxTimer);
+						}
+					} else {
+						clearInterval(maxTimer);
+					}
+				}, 20);
+			}
+			var minBtn = document.getElementById("small");
+			minBtn.onclick = function() {
+				minFun();
+			}
+			var minWidth = img.width * 0.5; //缩小宽度的极限值
+			var minHeight = img.height * 0.5; //缩小高度的极限值
+			//实现缩小函数
+			function minFun() {
+				var endWidth = img.width * 0.7; //每次点击后的宽度
+				var endHeight = img.height * 0.7; //每次点击后的高度
+				var maxTimer = setInterval(function() {
+					if (img.width > endWidth) {
+						if (img.width > minWidth) {
+							img.width = img.width * 0.95;
+							img.height = img.height * 0.95;
+							clearInterval(maxTimer);
+						} else {
+							alert("已经缩小到最小值了")
+							clearInterval(maxTimer);
+						}
+					} else {
+						clearInterval(maxTimer);
+					}
+				}, 20);
+			}
+		}
+	</script>
+</html>

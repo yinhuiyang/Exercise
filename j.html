@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+
+	</body>
+	<script src="http://libs.baidu.com/jquery/1.7.2/jquery.min.js"></script>
+	<script src="jquery-ui-1.12.1.custom/jquery-ui.js"></script>
+	<script>
+		let timer;
+		window.onscroll = function() {
+			if (timer) {
+				clearTimeout(timer)
+			}
+			timer = setTimeout(function() {
+				//滚动条位置
+				let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+				console.log('滚动条位置：' + scrollTop);
+				timer = undefined;
+			}, 200)
+		}
+
+		//封装防抖函数
+		function debounce(method, delay) {
+			let timer = null;
+			return function() {
+				let self = this,
+					args = arguments;
+				timer && clearTimeout(timer);
+				timer = setTimeout(function() {
+					method.apply(self, args);
+				}, delay)
+			}
+		}
+		
+		//this指代全局对象;改变了全局对象的值
+			var x = 3;
+			function test(){
+				this.x = 2;
+				alert(this.x)
+			}
+			test()
+	
+		//this指代上级对象
+// 			function test1(){
+// 				alert(this.x)
+// 			}
+// 			var o={};
+// 			o.x = 1;
+// 			o.m = test1;
+// 			o.m()
+// 	</script>
+</html>

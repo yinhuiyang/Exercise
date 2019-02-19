@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<link rel="stylesheet" type="text/css" href="jquery-ui-1.12.1.custom/jquery-ui.css" />
+	<body>
+		<div class="ui-widget">
+			<input id="tags1" />
+			<input id="tags2" />
+			<input id="tags3" />
+			<input id="tags4" />
+			<input id="tags5" />
+			<input id="tags6" />
+		</div>
+
+		<button id="btn" style="margin-left: 500px;">下一步</button>
+	</body>
+	<script src="http://libs.baidu.com/jquery/1.8.1/jquery.min.js"></script>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-ajaxtransport-xdomainrequest/1.0.3/jquery.xdomainrequest.min.js"></script>
+	<script src="http://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+	<script>
+		var dat;
+		var availableTags = [];
+		$.ajax({
+			url: "http://192.168.65.245:8848/help/ashx/Handler1.ashx?action=GetKHInfoList",
+			type: "get",
+			dataType: 'json',
+			// async:false,
+			cache:false,
+			success: function(data) {
+				dat = data;
+				for (var i = 0; i < data.length; i++) {
+					availableTags.push(data[i].kh_name);
+				}
+			}
+		});
+		var a = availableTags;
+		setTimeout(function(){
+			var data = dat;
+			$("#tags1").autocomplete({
+				source: a,
+				select: function(e, ui) {
+					var val = ui.item.value;
+					for (var i = 0; i < data.length; i++) {
+						if (data[i].kh_name == val) {
+							console.log(data[i])
+							$("#tags2").val(data[i].sh)
+							$("#tags3").val(data[i].dz)
+							$("#tags4").val(data[i].dh)
+							$("#tags5").val(data[i].khyh)
+							$("#tags6").val(data[i].yhzh)
+						}
+					}
+				},
+			})
+		},1000)
+		
+		$("#btn").click(function() {
+			var khname = $("#tags1").val();
+			var sh = $("#tags2").val();
+			var dz = $("#tags3").val();
+			var dh = $("#tags4").val();
+			var khyh = $("#tags5").val();
+			var yhzh = $("#tags6").val();
+			var str = "khname=" + khname + "&sh=" + sh + "&dh=" + dh + "&dz=" + dz + "&yhzh=" + yhzh + "&khyh=" + khyh
+			$.ajax({
+				url: "http://192.168.65.245:8848/help/ashx/Handler1.ashx?action=AddOrUpdateKHInfo&" + str,
+				type: "post",
+				success: function(data) {
+					console.log(data)
+				}
+			})
+		})
+	</script>
+</html>
